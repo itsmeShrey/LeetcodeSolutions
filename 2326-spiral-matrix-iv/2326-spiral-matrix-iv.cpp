@@ -20,76 +20,56 @@ public:
             }
             v.push_back(v1);
         }
-
-         // Defining the boundaries of the matrix.
-    int top = 0, bottom = m - 1, left = 0, right = n - 1;
-    
-    // Defining the direction in which the array is to be traversed.
-    int dir = 1;
-    
-    while (top <= bottom && left <= right) {
-
-        if (dir == 1) {    // moving left->right
-        for (int i = left; i <= right; ++i) {
-            if(temp==NULL){
-                v[top][i]=-1;   
+        int top=0,left=0;int right=n-1,bottom=m-1;
+        while(top<=bottom && left<=right){
+            for(int i=left;i<=right;i++){
+                if(temp==NULL){
+                    v[top][i]=-1;
+                }
+                else{
+                    v[top][i]=temp->val;
+                    temp=temp->next;
+                }
             }
-            else{
-                v[top][i]=temp->val;
-                temp=temp->next;
+            top++;
+
+            for(int i=top;i<=bottom;i++){
+                if(temp==NULL){
+                    v[i][right]=-1;
+                }
+                else{
+                    v[i][right]=temp->val;
+                    temp=temp->next;
+                }
+            }
+            right--;
+            
+            if(top<=bottom){
+                for(int i=right;i>=left;i--){
+                    if(temp==NULL){
+                        v[bottom][i]=-1;
+                    }
+                    else{
+                        v[bottom][i]=temp->val;
+                        temp=temp->next;
+                    }
+                }
+                bottom--;
             }
             
-        }
-        ++top;
-        dir = 2;
-        } 
-        else if (dir == 2) {     // moving top->bottom
-        for (int i = top; i <= bottom; ++i) {
-            if(temp==NULL){
-                v[i][right]=-1;
-            }
-            else{
-                v[i][right]=temp->val;
-                temp=temp->next;
-            }
-        }
-        // Since we have traversed the whole last
-        // column, move left to the previous column.
-        --right;
-        dir = 3;
-        } 
-        else if (dir == 3) {     // moving right->left
-        for (int i = right; i >= left; --i) {
-            if(temp==NULL){
-                v[bottom][i]=-1;
-            }
-            else{
-                v[bottom][i]=temp->val;
-                temp=temp->next;
+            if(left<=right){
+                for(int i=bottom;i>=top;i--){
+                    if(temp==NULL){
+                        v[i][left]=-1;
+                    }
+                    else{
+                        v[i][left]=temp->val;
+                        temp=temp->next;
+                    }
+                }
+                left++;
             }
         }
-        // Since we have traversed the whole last
-        // row, move up to the previous row.
-        --bottom;
-        dir = 4;
-        } 
-        else if (dir == 4) {     // moving bottom->up
-        for (int i = bottom; i >= top; --i) {
-            if(temp==NULL){
-                v[i][left]=-1;
-            }
-            else{
-                v[i][left]=temp->val;
-                temp=temp->next;
-            }
-        }
-        // Since we have traversed the whole first
-        // col, move right to the next column.
-        ++left;
-        dir = 1;
-        }
-    }
-    return v;
-
+        return v;
     }
 };
