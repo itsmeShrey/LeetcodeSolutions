@@ -1,20 +1,20 @@
 class Solution {
 public:
-    string w1, w2;
-    int n, m;
-    vector<vector<int>> dp;
-    int lcs(int i, int j){
-        if (i>=n|| j>=m) return 0;
-        if (dp[i][j]!=-1) return dp[i][j];
-        if (w1[i]==w2[j]) return dp[i][j]=1+lcs(i+1, j+1);
-        else return dp[i][j]=max(lcs(i+1, j), lcs(i, j+1));
+    int f(int index1,int index2,string &text1, string &text2,vector<vector<int>>&dp){
+        if(index1<0 || index2<0){
+            return 0;
+        }
+        if(dp[index1][index2]!=-1){
+            return dp[index1][index2];
+        }
+        if(text1[index1]==text2[index2]){
+            return dp[index1][index2]=1+f(index1-1,index2-1,text1,text2,dp);
+        }
+        return dp[index1][index2]=max(f(index1-1,index2,text1,text2,dp),f(index1,index2-1,text1,text2,dp));
     }
     int longestCommonSubsequence(string text1, string text2) {
-        w1=text1;
-        w2=text2;
-        n=text1.size();
-        m=text2.size();
-        dp.assign(n, vector(m, -1));
-        return lcs(0, 0);
+        int c=text1.length(),d=text2.length();
+        vector<vector<int>>dp(c,vector<int>(d,-1));
+        return f(c-1,d-1,text1,text2,dp);
     }
 };
